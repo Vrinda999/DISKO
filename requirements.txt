@@ -1,2 +1,5 @@
 elasticsearch~=7.17.6
 tqdm~=4.67.0
+Whoosh~=2.7.4
+pytsk3~=20231007
+fls~=0.0.1.241224

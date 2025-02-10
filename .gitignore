@@ -1,3 +1,8 @@
 .venv
 *.dd
+*.img
+*.E01
 .idea
+stages/indexdir
+stages/stage2_whoosh.py
+*.txt
