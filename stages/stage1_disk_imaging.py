@@ -10,9 +10,15 @@ def run_dcfldd():
     while not input_file:
         input_file = input("Input file/device cannot be empty. Please enter again: ").strip()
 
-    output_file = input("Enter the output file/device (e.g., output.img): ").strip()
-    while not output_file:
-        output_file = input("Output file/device cannot be empty. Please enter again: ").strip()
+    # Define the output folder
+    output_folder = "output_files"
+    os.makedirs(output_folder, exist_ok=True)  # Create the folder if it doesn't exist
+
+    output_filename = input("Enter the output filename (e.g., output.img): ").strip()
+    while not output_filename:
+        output_filename = input("Output filename cannot be empty. Please enter again: ").strip()
+
+    output_file = os.path.join(output_folder, output_filename)
 
     hash_option = input("Enable hashing? (yes/no): ").strip().lower()
 
