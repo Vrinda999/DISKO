@@ -17,17 +17,21 @@ def run_command(command):
 
 def get_latest_disk_image():
     """Finds the most recent disk image in output_files/ with valid extensions"""
-    image_files = sorted(
-        [file for ext in VALID_EXTENSIONS for file in Path(OUTPUT_DIR).glob(f"*{ext}")],
-        key=os.path.getmtime,
-        reverse=True
-    )
-    return str(image_files[0]) if image_files else None
+    try:
+        image_files = sorted(
+            [file for ext in VALID_EXTENSIONS for file in Path(OUTPUT_DIR).glob(f"*{ext}")],
+            key=lambda f: os.path.getmtime(f),
+            reverse=True
+        )
+        return str(image_files[0]) if image_files else None
+    except Exception as e:
+        print(f"Error finding latest disk image: {e}")
+        return None
 
 def get_partition_start_sector(mmls_output):
     """Extract the start sector of partition 002"""
     for line in mmls_output.splitlines():
-        match = re.match(r"\s*002:\s+\S+\s+(\d+)", line)  # Adjusted regex
+        match = re.match(r"\s*002:\s+\d+:\d+\s+(\d+)", line)  # Adjusted regex
         if match:
             return match.group(1)
     return None
@@ -44,6 +48,7 @@ def analyze_disk_image(image_path):
     print("\n--- Partition Table Information ---")
     mmls_output = run_command(f"mmls {image_path}")
     if not mmls_output:
+        print("Error: mmls command failed.")
         return
 
     print(mmls_output)
@@ -59,11 +64,15 @@ def analyze_disk_image(image_path):
     fsstat_output = run_command(f"fsstat -o {start_sector} {image_path}")
     if fsstat_output:
         print(fsstat_output)
+    else:
+        print("Error: fsstat command failed.")
 
     print("\n--- Listing Root Directory Files ---")
     fls_output = run_command(f"fls -r -o {start_sector} {image_path}")
     if fls_output:
         print(fls_output)
+    else:
+        print("Error: fls command failed.")
 
 # Main Execution
 if __name__ == "__main__":

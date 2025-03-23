@@ -1,7 +1,6 @@
 from stages.stage1_disk_imaging import run_dcfldd
 from stages.stage3_extraction import analyze_disk_image
 
-
 def main():
     print("Disk Forensics Tool - CLI Version")
 
@@ -19,7 +18,8 @@ def main():
     print("\nProceeding to disk image analysis...")
     analyze_disk_image(disk_image)
 
-    # Stage 4:
+    # Stage 3.1: Categorization
+
 
 if __name__ == "__main__":
     main()
