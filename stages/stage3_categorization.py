@@ -15,7 +15,6 @@ def run_command(command):
         print(f"Error executing {command}: {e}")
         return None
 
-
 def get_latest_disk_image():
     """Finds the most recent disk image in output_files/ with valid extensions."""
     image_files = sorted(
@@ -24,7 +23,6 @@ def get_latest_disk_image():
         reverse=True
     )
     return str(image_files[0]) if image_files else None
-
 
 def categorize_data(image_path, start_sector):
     """Categorizes deleted, encrypted, current, and hidden data."""
@@ -66,7 +64,6 @@ def categorize_data(image_path, start_sector):
         print(hidden_files)
     else:
         print("No hidden files found.")
-
 
 # Main Execution
 if __name__ == "__main__":
