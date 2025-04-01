@@ -41,7 +41,7 @@ def analyze_disk_image(image_path):
 
     if not os.path.exists(image_path):
         print(f"Error: Disk image '{image_path}' not found.")
-        return
+        return None
 
     print(f"\nUsing Disk Image: {image_path}")
 
@@ -49,14 +49,14 @@ def analyze_disk_image(image_path):
     mmls_output = run_command(f"mmls {image_path}")
     if not mmls_output:
         print("Error: mmls command failed.")
-        return
+        return None
 
     print(mmls_output)
 
     start_sector = get_partition_start_sector(mmls_output)
     if not start_sector:
         print("Error: Could not determine start sector.")
-        return
+        return None
 
     print(f"\n--- Extracted Start Sector: {start_sector} ---")
 
@@ -73,6 +73,8 @@ def analyze_disk_image(image_path):
         print(fls_output)
     else:
         print("Error: fls command failed.")
+
+    return start_sector
 
 # Main Execution
 if __name__ == "__main__":

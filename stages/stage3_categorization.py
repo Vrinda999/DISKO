@@ -6,7 +6,6 @@ from pathlib import Path
 OUTPUT_DIR = "output_files"  # Folder where disk images are stored
 VALID_EXTENSIONS = [".dd", ".E01", ".img"]  # Supported image formats
 
-
 def run_command(command):
     """Executes a shell command and returns the output."""
     try:
