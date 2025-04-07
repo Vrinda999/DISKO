@@ -1,7 +1,9 @@
 from stages.stage1_disk_imaging import run_dcfldd
 from stages.stage2_extraction import analyze_disk_image
-from stages.stage3_categorization import categorize_data
+from stages.stage3_categorization import categorize_data, fls_output
+from stages.stage4_filtering import get_files_by_type
 from stages.stage5_reporting import generate_report
+
 
 def main():
     print("🔍 Disk Forensics Tool - CLI Version")
@@ -27,6 +29,24 @@ def main():
     if not categorized_output:
         print("❌ Categorization failed. Exiting...")
         return
+
+    # Stage 4
+    print("\n📂 Proceeding to Keyword Filtering...")
+    # File type filtering
+    file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(",")
+    matching_files = get_files_by_type(disk_image, start_sector, file_types)
+    if matching_files:
+        print("\nMatching files:")
+        for ext in matching_files:
+            print(f'.{ext} Files')
+            for files in matching_files[ext]:
+                print(files)
+            print()
+    else:
+        print("No files found with the specified extensions.")
+
+    # Keyword filtering
+
 
     # Stage 5: Report Generation
     print("\n📝 Generating PDF report...")
