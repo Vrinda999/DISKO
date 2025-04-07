@@ -1,4 +1,1 @@
-tqdm~=4.67.0
-pytsk3~=20231007
-fls~=0.0.1.241224
-reportlab
+fpdf==1.7.2

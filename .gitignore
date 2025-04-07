@@ -3,6 +3,12 @@
 *.img
 *.E01
 .idea
-stages/indexdir
-stages/stage2_whoosh.py
 *.txt
+
+__pycache__/
+*.pyc
+output_files/*.dd
+output_files/*.img
+output_files/*.E01
+output_files/*.hash
+output_files/reports/
