@@ -1,10 +1,5 @@
 import subprocess
 import os
-import re
-from pathlib import Path
-
-OUTPUT_DIR = "output_files"  # Folder where disk images are stored
-VALID_EXTENSIONS = [".dd", ".E01", ".img"]  # Supported image formats
 
 def run_command(command):
     """Executes a shell command and returns the output."""
@@ -15,65 +10,50 @@ def run_command(command):
         print(f"Error executing {command}: {e}")
         return None
 
-def get_latest_disk_image():
-    """Finds the most recent disk image in output_files/ with valid extensions."""
-    image_files = sorted(
-        [file for ext in VALID_EXTENSIONS for file in Path(OUTPUT_DIR).glob(f"*{ext}")],
-        key=os.path.getmtime,
-        reverse=True
-    )
-    return str(image_files[0]) if image_files else None
-
 def categorize_data(image_path, start_sector):
-    """Categorizes deleted, encrypted, current, and hidden data."""
+    """
+    Categorizes deleted, encrypted, current, and hidden data from the disk image.
+    """
     if not os.path.exists(image_path):
         print(f"Error: Disk image '{image_path}' not found.")
-        return
+        return None
 
     print(f"\nUsing Disk Image: {image_path}")
     print("\n--- Categorizing Data ---")
 
+    results = {}
+
     # Deleted files
     print("\n--- Deleted Files ---")
     deleted_files = run_command(f"fls -o {start_sector} -r -p {image_path} -d")
-    if deleted_files:
-        print(deleted_files)
-    else:
-        print("No deleted files found.")
+    results['deleted'] = deleted_files
+    print(deleted_files if deleted_files else "No deleted files found.")
 
     # Encrypted files
     print("\n--- Encrypted Files ---")
     encrypted_files = run_command(f"binwalk -E {image_path}")
-    if encrypted_files:
-        print(encrypted_files)
-    else:
-        print("No encrypted data found.")
+    results['encrypted'] = encrypted_files
+    print(encrypted_files if encrypted_files else "No encrypted data found.")
 
-    # Current files (active files)
+    # Current files
     print("\n--- Current Files ---")
     current_files = run_command(f"fls -o {start_sector} -r -p {image_path}")
-    if current_files:
-        print(current_files)
-    else:
-        print("No current files found.")
+    results['current'] = current_files
+    print(current_files if current_files else "No current files found.")
 
     # Hidden files
     print("\n--- Hidden Files ---")
     hidden_files = run_command(f"fls -o {start_sector} -r -p {image_path} | grep '\\.'")
-    if hidden_files:
-        print(hidden_files)
-    else:
-        print("No hidden files found.")
+    results['hidden'] = hidden_files
+    print(hidden_files if hidden_files else "No hidden files found.")
 
-# Main Execution
+    return results
+
+# For testing categorization module independently
 if __name__ == "__main__":
-    image_path = get_latest_disk_image()
-    if not image_path:
-        image_path = input("No disk image found in output_files/. Enter image path manually: ").strip()
-
-    start_sector = input("Enter the start sector of partition 002: ").strip()
-
+    image_path = input("Enter disk image path: ").strip()
+    start_sector = input("Enter start sector: ").strip()
     if image_path and start_sector:
         categorize_data(image_path, start_sector)
     else:
-        print("No disk image or start sector provided. Exiting.")
+        print("Missing image path or start sector. Exiting.")
