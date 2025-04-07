@@ -34,7 +34,7 @@ def categorize_data(image_path, start_sector):
 
     # Encrypted files
     print("\n--- Encrypted Files ---")
-    encrypted_files = run_command(f"binwalk -E -N -J {image_path}")
+    encrypted_files = run_command(f"binwalk -E -J -N {image_path}")
     results['encrypted'] = encrypted_files
     print(encrypted_files if encrypted_files else "No encrypted data found.")
 

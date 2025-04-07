@@ -3,16 +3,16 @@ import re
 from shutil import disk_usage
 
 
-def get_files_by_type(image_path, offset, file_types):
+def get_files_by_type(image_path, categorized_output, file_types):
     # Run fls command
-    fls_command = f"fls -o {offset} {image_path}"
-    result = subprocess.run(fls_command, shell=True, capture_output=True, text=True)
+    # fls_command = f"fls -o {offset} {image_path}"
+    # result = subprocess.run(fls_command, shell=True, capture_output=True, text=True)
+    #
+    # if result.returncode != 0:
+    #     print("Error running fls:", result.stderr)
+    #     return []
 
-    if result.returncode != 0:
-        print("Error running fls:", result.stderr)
-        return []
-
-    files = result.stdout.splitlines()
+    files = categorized_output.splitlines()
     filtered_files = {}
     # Convert file types to lowercase and strip spaces
     file_types = {ft.strip().lower() for ft in file_types}
