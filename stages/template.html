@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>DISKO Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { text-align: center; }
+        h2 { color: #333366; border-bottom: 1px solid #ccc; }
+        ul { padding-left: 20px; }
+        .category { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>DISKO Report</h1>
+    <p><strong>Date:</strong> {{ date }}</p>
+
+    <h2>Image Info</h2>
+    <ul>
+        <li><strong>Name:</strong> {{ image.name }}</li>
+        <li><strong>Hash:</strong> {{ image.hash }}</li>
+        <li><strong>Size:</strong> {{ image.size }}</li>
+    </ul>
+
+    {% for category, files in categorized.items() %}
+        <div class="category">
+            <h2>{{ category }} Files ({{ files | length }})</h2>
+            <ul>
+                {% for file in files %}
+                    <li>{{ file }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</body>
+</html>

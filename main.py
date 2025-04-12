@@ -1,12 +1,13 @@
 from stages.stage1_disk_imaging import run_dcfldd
 from stages.stage2_extraction import analyze_disk_image
 from stages.stage3_categorization import categorize_data, fls_output
-from stages.stage4_filtering import get_files_by_type
+# from stages.stage4_filtering import get_files_by_type
 from stages.stage5_reporting import generate_report
+# from stages.reportdemo import generate_report
 
 
 def main():
-    print("🔍 Disk Forensics Tool - CLI Version")
+    print("🔍 DISKO: Disk Operation Tool for Data Categorization and Keyword Filtering - CLI Version")
 
     # Stage 1: Disk Imaging or Use Existing Image
     disk_image = run_dcfldd()
@@ -31,26 +32,27 @@ def main():
         return
 
     # Stage 4
-    print("\n📂 Proceeding to Keyword Filtering...")
-    # File type filtering
-    file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(",")
-    matching_files = get_files_by_type(disk_image, categorized_output['current'], file_types)
-    if matching_files:
-        print("\nMatching files:")
-        for ext in matching_files:
-            print(f'.{ext} Files')
-            for files in matching_files[ext]:
-                print(files)
-            print()
-    else:
-        print("No files found with the specified extensions.")
+    # print("\n📂 Proceeding to Keyword Filtering...")
+    # # File type filtering
+    # file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(",")
+    # matching_files = get_files_by_type(disk_image, categorized_output['current'], file_types)
+    # if matching_files:
+    #     print("\nMatching files:")
+    #     for ext in matching_files:
+    #         print(f'.{ext} Files')
+    #         for files in matching_files[ext]:
+    #             print(files)
+    #         print()
+    # else:
+    #     print("No files found with the specified extensions.")
 
     # Keyword filtering
-    keywords = input("Enter keywords to search (comma-separated): ").split(",")
-    keyword_matches = search_keywords(filtered_files, keywords)
-    print("\nFiles Matching Keywords:")
-    for file, preview in keyword_matches.items():
-        print(f"{file}: {preview}")
+    # keywords = input("Enter keywords to search (comma-separated): ").split(",")
+    # keyword_matches = search_keywords(filtered_files, keywords)
+    # print("\nFiles Matching Keywords:")
+    # for file, preview in keyword_matches.items():
+    #     print(f"{file}: {preview}")
+    
 
     # Stage 5: Report Generation
     print("\n📝 Generating PDF report...")

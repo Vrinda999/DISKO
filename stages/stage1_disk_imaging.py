@@ -41,9 +41,6 @@ def run_dcfldd():
         if log_file:
             command.append(f"log={log_file}")
 
-        # Adding a progress report option
-        # command.append("progress=on")
-
         print("\nGenerated dcfldd command:")
         print(" ".join(command))
 
