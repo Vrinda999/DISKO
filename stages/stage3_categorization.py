@@ -50,6 +50,8 @@ def categorize_data(image_path, start_sector):
     hidden_files = run_command(f"fls -o {start_sector} -r -p {image_path} | grep '\\.'")
     results['hidden'] = hidden_files
     print(hidden_files if hidden_files else "No hidden files found.")
+    
+    return results
 
 
 # For testing categorization module independently
