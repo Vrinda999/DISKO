@@ -51,7 +51,6 @@ def categorize_data(image_path, start_sector):
     results['hidden'] = hidden_files
     print(hidden_files if hidden_files else "No hidden files found.")
 
-    return results
 
 # For testing categorization module independently
 if __name__ == "__main__":
