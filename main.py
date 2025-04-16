@@ -2,6 +2,7 @@ from stages.stage1_disk_imaging import run_dcfldd
 from stages.stage2_extraction import analyze_disk_image
 from stages.stage3_categorization import categorize_data, fls_output
 from stages.stage4_filtering import get_files_by_type
+from stages.stage4_2_keyword import Master_Func
 from stages.stage5_reporting import generate_report
 # from stages.reportdemo import generate_report
 
@@ -32,10 +33,10 @@ def main():
         return
 
     # Stage 4
-    print("\n📂 Proceeding to Keyword Filtering...")
+    print("\n📂 Proceeding to Filtering...")
     # File type filtering
     file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(",")
-    if file_types[0]=='':
+    if not file_types:
         print("No File Type Selected")
     else:
         matching_files = get_files_by_type(disk_image, categorized_output['current'], file_types)
@@ -48,6 +49,15 @@ def main():
                 print()
         else:
             print("No files found with the specified extensions.")
+    
+    # Keyword Filtering
+    keywords = input("Enter Keywords (comma-separated, e.g.: Lorem, Ipsum, dolor): ").split(",")
+    if not keywords:
+        print("No Keywords Chosen")
+    else:
+        output_dir = input("Enter Output Directory (e.g.: ./output_files/extracted_files): ")
+        Master_Func(disk_image, keywords, output_dir, start_sector)
+
 
     # Stage 5: Report Generation
     print("\n📝 Generating PDF report...")
