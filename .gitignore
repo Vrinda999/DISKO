@@ -12,3 +12,5 @@ output_files/*
 misc.xml
 .iml
 output_files
+resources.md
+*png

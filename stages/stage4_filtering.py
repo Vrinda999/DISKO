@@ -1,17 +1,7 @@
-import subprocess
 import re
-from shutil import disk_usage
 
 
 def get_files_by_type(image_path, categorized_output, file_types):
-    # Run fls command
-    # fls_command = f"fls -o {offset} {image_path}"
-    # result = subprocess.run(fls_command, shell=True, capture_output=True, text=True)
-    #
-    # if result.returncode != 0:
-    #     print("Error running fls:", result.stderr)
-    #     return []
-
     files = categorized_output.splitlines()
     filtered_files = {}
     # Convert file types to lowercase and strip spaces
@@ -21,7 +11,7 @@ def get_files_by_type(image_path, categorized_output, file_types):
         filtered_files[extension] = []
 
     # Regex to extract filenames
-    file_pattern = re.compile(r':\t(.+)$')  # Captures everything after the tab
+    file_pattern = re.compile(r':\t(.+)$')              # Captures everything after the tab
 
     for line in files:
         match = file_pattern.search(line)
