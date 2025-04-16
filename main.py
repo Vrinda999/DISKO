@@ -3,10 +3,11 @@ from stages.stage2_extraction import analyze_disk_image
 from stages.stage3_categorization import categorize_data, fls_output
 from stages.stage4_filtering import get_files_by_type
 from stages.stage5_reporting import generate_report
+# from stages.reportdemo import generate_report
 
 
 def main():
-    print("🔍 Disk Forensics Tool - CLI Version")
+    print("🔍 DISKO: Disk Operation Tool for Data Categorization and Keyword Filtering - CLI Version")
 
     # Stage 1: Disk Imaging or Use Existing Image
     disk_image = run_dcfldd()
