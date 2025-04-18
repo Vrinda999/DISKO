@@ -1,10 +1,21 @@
+import os
+import subprocess
+
 from stages.stage1_disk_imaging import run_dcfldd
 from stages.stage2_extraction import analyze_disk_image
-from stages.stage3_categorization import categorize_data, fls_output
+from stages.stage3_categorization import categorize_data
 from stages.stage4_filtering import get_files_by_type
-from stages.stage4_2_keyword import Master_Func
+from stages.stage4_2_keyword import mount_and_extract_text_files
 from stages.stage5_reporting import generate_report
-# from stages.reportdemo import generate_report
+
+def run_command(command):
+    """Executes a shell command and returns the output."""
+    try:
+        result = subprocess.run(command, shell=True, text=True, capture_output=True, check=True)
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing {command}: {e}")
+        return None
 
 
 def main():
@@ -36,7 +47,7 @@ def main():
     print("\n📂 Proceeding to Filtering...")
     # File type filtering
     file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(",")
-    if not file_types:
+    if file_types[0] == '':
         print("No File Type Selected")
     else:
         matching_files = get_files_by_type(disk_image, categorized_output['current'], file_types)
@@ -51,12 +62,23 @@ def main():
             print("No files found with the specified extensions.")
     
     # Keyword Filtering
-    keywords = input("Enter Keywords (comma-separated, e.g.: Lorem, Ipsum, dolor): ").split(",")
-    if not keywords:
-        print("No Keywords Chosen")
-    else:
-        output_dir = input("Enter Output Directory (e.g.: ./output_files/extracted_files): ")
-        Master_Func(disk_image, keywords, output_dir, start_sector)
+    # keywords = input("Enter Keywords (comma-separated, e.g.: Lorem, Ipsum, dolor): ").split(",")
+    # if keywords[0] == '':
+    #     print("No Keywords Chosen")
+    # else:
+    #     output_dir = input("Enter Output Directory (e.g.: ./output_files/extracted_files): ")
+    #     Master_Func(disk_image, keywords, output_dir, start_sector)
+    
+
+    # Keyword New Trial
+    image_path='TEST.E01'
+    output_dir='./output_files/extracted_files'
+
+    image_name = os.path.basename(image_path)
+    image_stem = os.path.splitext(image_name)[0]
+    output_dir = os.path.join(output_dir, image_stem)
+
+    mount_and_extract_text_files(image_path, output_dir, start_sector)
 
 
     # Stage 5: Report Generation

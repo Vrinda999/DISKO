@@ -1,9 +1,9 @@
 import os
 import subprocess
+from stages.stage2_extraction import run_command
 
-def mount_and_extract_text_files(image_path, output_dir, file_types=None):
-    if file_types is None:
-        file_types = ['.txt', '.pdf', '.doc', '.docx']
+def mount_and_extract_text_files(image_path, output_dir, start_sector):
+    file_types = ['.txt', '.pdf', '.doc', '.docx']
 
     image_name = os.path.basename(image_path)
     mount_dir = './output_files/mnt/forensics_mount'
@@ -18,22 +18,15 @@ def mount_and_extract_text_files(image_path, output_dir, file_types=None):
         if image_path.lower().endswith('.e01'):
             os.makedirs(ewf_mount_point, exist_ok=True)
             # Mount the E01
-            subprocess.run(['ewfmount', image_path, ewf_mount_point], check=True)
+            run_command(f"sudo ewfmount {image_path} {ewf_mount_point}")
             image_path = os.path.join(ewf_mount_point, 'ewf1')
         
-        # Find partition start sector using mmls
-        mmls_output = subprocess.check_output(['mmls', image_path]).decode()
-        for line in mmls_output.strip().split('\n'):
-            if 'Linux' in line or 'NTFS' in line or 'FAT' in line:
-                parts = line.split()
-                start_sector = parts[2]
-                break
-        else:
-            raise Exception("Couldn't find a valid partition in the image.")
+
+        print(f"{"-"*100}\nMMLS START SECTOR!!! = {start_sector}\n\n")
 
         # Mount the partition using offset
         offset = int(start_sector) * 512
-        subprocess.run(['mount', '-o', f'loop,ro,offset={offset}', image_path, mount_dir], check=True)
+        run_command(f"sudo mount -o loop,ro,offset={offset} {image_path} {mount_dir}")
 
         # Copy text files
         for root, dirs, files in os.walk(mount_dir):
@@ -43,22 +36,28 @@ def mount_and_extract_text_files(image_path, output_dir, file_types=None):
                     relative_path = os.path.relpath(source_path, mount_dir)
                     dest_path = os.path.join(output_dir, relative_path)
                     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-                    print(f'Copying Files Now. Root: {root}, \nDirs: {dirs}, \nfile: {file}')
-                    print(f"src path: {source_path}, \nrel path: {relative_path}, \nDest Path: {dest_path}")
+                    print(f'Copying Files Now. Root: {root}, \nDirs: {dirs}, \nfile: {file}\n\n')
+                    print(f"src path: {source_path}, \nrel path: {relative_path}, \nDest Path: {dest_path}\n\n")
                     try:
-                        subprocess.run(['cp', source_path, dest_path], check=True)
+                        cp_cmd = f'sudo cp "{source_path}" "{dest_path}"'
+                        run_command(cp_cmd)
                     except subprocess.CalledProcessError:
                         print(f"[!] Failed to copy: {source_path}")
 
     finally:
         # Cleanup: unmount everything
-        subprocess.run(['umount', mount_dir], stderr=subprocess.DEVNULL)
-        subprocess.run(['umount', ewf_mount_point], stderr=subprocess.DEVNULL)
+        run_command(f'sudo umount "{mount_dir}"')
+        run_command(f'sudo umount "{ewf_mount_point}"')
 
 
-if __name__ == "__main__":
-    mount_and_extract_text_files(
-    image_path='bootcamp.E01',
-    output_dir='./output_files/extracted_files',
-    file_types=['.txt', '.pdf']
-)
+# if __name__ == "__main__":
+#     image_path='TEST.E01'
+#     output_dir='./output_files/extracted_files'
+
+#     image_name = os.path.basename(image_path)
+#     image_stem = os.path.splitext(image_name)[0]
+#     output_dir = os.path.join(output_dir, image_stem)
+
+#     start_sector = analyze_disk_image(image_path)
+
+#     mount_and_extract_text_files(image_path, output_dir, start_sector)
