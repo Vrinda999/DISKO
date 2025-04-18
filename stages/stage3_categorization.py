@@ -1,7 +1,6 @@
 import subprocess
 import os
 
-fls_output = ""
 
 def run_command(command):
     """Executes a shell command and returns the output."""
