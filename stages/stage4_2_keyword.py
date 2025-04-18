@@ -5,6 +5,7 @@ from utils.run_command import run_command
 
 def mount_and_extract_text_files(image_path, output_dir, start_sector):
     file_types = ['.txt', '.pdf', '.doc', '.docx']
+    img_file_type = "dd"
 
     image_name = os.path.basename(image_path)
     mount_dir = './output_files/mnt/forensics_mount'
@@ -17,6 +18,7 @@ def mount_and_extract_text_files(image_path, output_dir, start_sector):
 
     try:
         if image_path.lower().endswith('.e01'):
+            img_file_type = "e01"
             os.makedirs(ewf_mount_point, exist_ok=True)
             # Mount the E01
             run_command(f"sudo ewfmount {image_path} {ewf_mount_point}")
@@ -46,7 +48,8 @@ def mount_and_extract_text_files(image_path, output_dir, start_sector):
     finally:
         # Cleanup: unmount everything
         run_command(f'sudo umount "{mount_dir}"')
-        run_command(f'sudo umount "{ewf_mount_point}"')
+        if img_file_type == "e01":
+            run_command(f'sudo umount "{ewf_mount_point}"')
 
 
 
