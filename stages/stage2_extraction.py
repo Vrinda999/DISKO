@@ -1,19 +1,11 @@
-import subprocess
 import os
 import re
 from pathlib import Path
+from utils.run_command import run_command
+
 
 OUTPUT_DIR = "output_files"  # Folder where disk images are stored
 VALID_EXTENSIONS = [".dd", ".E01", ".img"]  # Supported image formats
-
-def run_command(command):
-    """Executes a shell command and returns the output."""
-    try:
-        result = subprocess.run(command, shell=True, text=True, capture_output=True, check=True)
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing {command}: {e}")
-        return None
 
 
 def analyze_disk_image(disk_image_path):

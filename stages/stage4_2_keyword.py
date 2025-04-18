@@ -1,7 +1,7 @@
 import os
 import re
 import subprocess
-from stages.stage2_extraction import run_command
+from utils.run_command import run_command
 
 def mount_and_extract_text_files(image_path, output_dir, start_sector):
     file_types = ['.txt', '.pdf', '.doc', '.docx']

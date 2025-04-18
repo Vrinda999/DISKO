@@ -1,15 +1,5 @@
-import subprocess
 import os
-
-
-def run_command(command):
-    """Executes a shell command and returns the output."""
-    try:
-        result = subprocess.run(command, shell=True, text=True, capture_output=True, check=True)
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing {command}: {e}")
-        return None
+from utils.run_command import run_command
 
 
 def categorize_data(image_path, start_sector):

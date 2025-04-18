@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 from stages.stage1_disk_imaging import run_dcfldd
 from stages.stage2_extraction import analyze_disk_image
@@ -7,15 +6,6 @@ from stages.stage3_categorization import categorize_data
 from stages.stage4_filtering import get_files_by_type
 from stages.stage4_2_keyword import MasterFunc
 from stages.stage5_reporting import generate_report
-
-def run_command(command):
-    """Executes a shell command and returns the output."""
-    try:
-        result = subprocess.run(command, shell=True, text=True, capture_output=True, check=True)
-        return result.stdout.strip()
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing {command}: {e}")
-        return None
 
 
 def main():
@@ -37,14 +27,15 @@ def main():
         return
 
     # Stage 3: Data Categorization
-    # print("\n📂 Proceeding to data categorization...")
-    # categorized_output = categorize_data(disk_image, start_sector)
-    # if not categorized_output:
-    #     print("❌ Categorization failed. Exiting...")
-    #     return
+    print("\n📂 Proceeding to data categorization...")
+    categorized_output = categorize_data(disk_image, start_sector)
+    if not categorized_output:
+        print("❌ Categorization failed. Exiting...")
+        return
 
     # Stage 4
     print("\n📂 Proceeding to Filtering...")
+    
     # File type filtering
     file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(",")
     if file_types[0] == '':
@@ -62,7 +53,7 @@ def main():
             print("No files found with the specified extensions.")
         
 
-    # Keyword New Trial
+    # Keyword Filtering from Text Files.
     image_name = os.path.basename(disk_image)
     image_stem = os.path.splitext(image_name)[0]
 
@@ -76,7 +67,7 @@ def main():
 
     # Stage 5: Report Generation
     print("\n📝 Generating PDF report...")
-    # generate_report(disk_image, categorized_output)
+    generate_report(disk_image, categorized_output)
 
 if __name__ == "__main__":
     main()
