@@ -3,11 +3,12 @@ import re
 import subprocess
 from utils.run_command import run_command
 
-def mount_and_extract_text_files(image_path, output_dir, start_sector):
-    file_types = ['.txt', '.pdf', '.doc', '.docx']
+def mount_and_extract_text_files(image_path, output_dir, start_sector, file_types = None):
+    if not file_types:
+        file_types = ['.txt', '.pdf', '.doc', '.docx']
+    
     img_file_type = "dd"
 
-    image_name = os.path.basename(image_path)
     mount_dir = './output_files/mnt/forensics_mount'
     partition_dir = './output_files/mnt/forensics_partition'
     ewf_mount_point = '/mnt/ewf_mount'
@@ -56,7 +57,6 @@ def mount_and_extract_text_files(image_path, output_dir, start_sector):
 def search_keywords_in_txt_files(txt_files, keywords):
     """Searches for keywords in extracted .txt files"""
     keyword_found = 0
-    keywords = [kw.strip().lower() for kw in keywords]
     results = {kw:['nil'] for kw in keywords}
 
     for file_path in txt_files:
@@ -82,16 +82,17 @@ def search_keywords_in_txt_files(txt_files, keywords):
 
 
     if keyword_found > 0:
-        for kw, found_list in results.items():
-            print(f"\n{"--"*60}\nKeyword: {kw} -->")
+        # for kw, found_list in results.items():
+        #     print(f"\n{"--"*60}\nKeyword: {kw} -->")
 
-            if isinstance(found_list, str) or (len(found_list) == 1 and isinstance(found_list[0], str)):
-                print(f"{found_list[0]}\n")
-                continue
+        #     if isinstance(found_list, str) or (len(found_list) == 1 and isinstance(found_list[0], str)):
+        #         print(f"{found_list[0]}\n")
+        #         continue
 
-            else:
-                for file, sent in found_list:
-                    print(f"- {file}: {sent}\n")
+        #     else:
+        #         for file, sent in found_list:
+        #             print(f"- {file}: {sent}\n")
+        print("Keyword(s) Found!")
         return results
 
     else:
@@ -99,23 +100,34 @@ def search_keywords_in_txt_files(txt_files, keywords):
         return "Keyword(s) Not Present."
 
 
-def get_txt_file_paths(folder_path):
+def get_file_paths(folder_path, ext):
     txt_files = []
     for root, dirs, files in os.walk(folder_path):
         for file in files:
-            if file.lower().endswith(".txt"):
+            if file.lower().endswith(ext):
                 txt_files.append(os.path.join(root, file))
     return txt_files
 
 
+def MasterFunc(image_path, keywords, output_dir, start_sector, file_types = None):
+    mount_and_extract_text_files(image_path, output_dir, start_sector, file_types)
+    txt_paths = get_file_paths(output_dir, ".txt")
+    pdf_paths = get_file_paths(output_dir, ".pdf")
+    doc_paths = get_file_paths(output_dir, ".doc")
+    res = get_file_paths(output_dir, ".docx")
+    doc_paths.append(res)
 
-def MasterFunc(image_path, keywords, output_dir, start_sector):
-    mount_and_extract_text_files(image_path, output_dir, start_sector)
-    txt_paths = get_txt_file_paths(output_dir)
+    result = {kw:[] for kw in keywords}
     
-    txt_res = search_keywords_in_txt_files(txt_paths, keywords)
-    print(txt_res)
-    return txt_res
+    res = search_keywords_in_txt_files(txt_paths, keywords)
+    print(f"\n{"-"*120}\nTxt Res: {res}\n\n")
+    for kw in result.keys():
+        if res[kw][0] != 'nil':
+            result[kw].append(res[kw])
+    
+    # res = search_keywords_in_pdf_files(pdf_paths, keywords)
+    # res = search_keywords_in_doc_files(doc_paths, keywords)
+    return result
 
 
 

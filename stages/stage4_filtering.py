@@ -18,7 +18,6 @@ def get_files_by_type(image_path, categorized_output, file_types):
         if match:
             filename = match.group(1)
             extension = filename.lower().rsplit('.', 1)[-1] if '.' in filename else ''
-            print(f'filename: {filename}, \t ext: {extension}')
 
             if f".{extension}" in file_types:
                 list_of_files = filtered_files[extension]

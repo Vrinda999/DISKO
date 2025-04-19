@@ -61,6 +61,7 @@ def main():
     if keywords[0] == '':
         print("No Keywords Chosen")
     else:
+        keywords = [kw.strip().lower() for kw in keywords]
         output_dir = input("Enter Output Directory (e.g.: ./output_files/extracted_files): ")
         output_dir = os.path.join(output_dir, image_stem)
         MasterFunc(disk_image, keywords, output_dir, start_sector)
