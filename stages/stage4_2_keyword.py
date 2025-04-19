@@ -56,7 +56,7 @@ def mount_and_extract_text_files(image_path, output_dir, start_sector, file_type
 
 def search_keywords_in_txt_files(txt_files, keywords):
     """Searches for keywords in extracted .txt files"""
-    keyword_found = 0
+    keyword_found = False
     results = {kw:['nil'] for kw in keywords}
 
     for file_path in txt_files:
@@ -72,7 +72,7 @@ def search_keywords_in_txt_files(txt_files, keywords):
                 for sentence in sentences:
                     if keyword in sentence.lower():
                         res.append((file_path, sentence.strip()))
-                        keyword_found += 1
+                        keyword_found = True
                         flag=1
                 if flag == 1:
                     results[keyword] = res
@@ -81,7 +81,7 @@ def search_keywords_in_txt_files(txt_files, keywords):
             print(f"Error reading {file_path}: {e}")
 
 
-    if keyword_found > 0:
+    if keyword_found:
         # for kw, found_list in results.items():
         #     print(f"\n{"--"*60}\nKeyword: {kw} -->")
 
@@ -100,6 +100,52 @@ def search_keywords_in_txt_files(txt_files, keywords):
         return "Keyword(s) Not Present."
 
 
+def search_keywords_in_pdf_files(pdf_files, keywords):
+    keyword_found = False
+    keyword_matches = {kw:['nil'] for kw in keywords}
+
+    for pdf in pdf_files:
+        pdf_lower = pdf.lower()
+        filename = os.path.basename(pdf)
+
+        for keyword in keywords:
+            # if keyword exists in filename
+            res = []
+            flag = 0
+            if keyword in filename.lower():
+                res.append((pdf, f"[Filename Match:] {filename}"))
+                keyword_found = True
+                flag=1
+                continue
+
+            try:
+                # Run pdfgrep to get lines with matches
+                result = run_command(f'sudo pdfgrep -i -n -C 1 "{keyword}" "{pdf}"')
+                if result:
+                    lines = result.split('\n')
+                    for line in lines:
+                        # Extract just the sentence part (skip line numbers)
+                        match = re.search(r"\d+:.*", line)
+                        if match:
+                            cleaned_line = re.sub(r'^\s*\d+:\s*', '', line)
+                            res.append((pdf, cleaned_line))
+                            keyword_found = True
+                            flag=1
+            except Exception as e:
+                if e.endswith("2."):
+                    print(f"Error reading {pdf}: {e}")
+
+            if flag == 1:
+                keyword_matches[keyword] = res
+    
+    if keyword_found:
+        print("Keyword(s) Found!")
+        return keyword_matches
+    else:
+        print(f"Keyword(s) Not Present.")
+        return "Keyword(s) Not Present."
+
+
 def get_file_paths(folder_path, ext):
     txt_files = []
     for root, dirs, files in os.walk(folder_path):
@@ -113,33 +159,36 @@ def MasterFunc(image_path, keywords, output_dir, start_sector, file_types = None
     mount_and_extract_text_files(image_path, output_dir, start_sector, file_types)
     txt_paths = get_file_paths(output_dir, ".txt")
     pdf_paths = get_file_paths(output_dir, ".pdf")
-    doc_paths = get_file_paths(output_dir, ".doc")
-    res = get_file_paths(output_dir, ".docx")
-    doc_paths.append(res)
+
+    print(f'\nTXT Paths: {txt_paths}, \nPDF Paths: {pdf_paths}\n\n')
+
+    # doc_paths = get_file_paths(output_dir, ".doc")
+    # res = get_file_paths(output_dir, ".docx")
+    # doc_paths.append(res)
 
     result = {kw:[] for kw in keywords}
     
     res = search_keywords_in_txt_files(txt_paths, keywords)
     print(f"\n{"-"*120}\nTxt Res: {res}\n\n")
-    for kw in result.keys():
-        if res[kw][0] != 'nil':
-            result[kw].append(res[kw])
+    if res != "Keyword(s) Not Present.":
+        for kw in result.keys():
+            if res[kw][0] != 'nil':
+                result[kw] = res[kw]
     
-    # res = search_keywords_in_pdf_files(pdf_paths, keywords)
+    res = search_keywords_in_pdf_files(pdf_paths, keywords)
+    print(f'\n{"-"*120}\nPDF Res: {res}\n\n')
+    if res != "Keyword(s) Not Present.":
+        for kw in result.keys():
+            print(f'KW: {kw}, \nResult Keys: {result.keys()}, \nres: {res}\n\n')
+            if res[kw][0] != 'nil':
+                result[kw] += res[kw]
+    print(f'Result: {result}')
+
     # res = search_keywords_in_doc_files(doc_paths, keywords)
+
+    for kw, found_list in result.items():
+        if found_list == []:
+            result[kw] = ['Keyword Not Found']
+    
+    print(f'\n\nRsults: {result}')
     return result
-
-
-
-# if __name__ == "__main__":
-#     image_path='bootcamp.E01'
-#     output_dir='./output_files/extracted_files'
-
-#     image_name = os.path.basename(image_path)
-#     image_stem = os.path.splitext(image_name)[0]
-#     output_dir = os.path.join(output_dir, image_stem)
-
-#     start_sector = analyze_disk_image(image_path)
-#     keywords = ['inDUStry', 'Chomu', 'Infancy']
-#     # keywords = input("Enter Keywords (comma-separated, e.g.: Lorem, Ipsum, dolor): ").split(",")
-#     MasterFunc(image_path, keywords, output_dir, start_sector)
