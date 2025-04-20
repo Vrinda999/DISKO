@@ -39,6 +39,7 @@ def main():
     
     # File type filtering
     file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(", ")
+    matching_files = "No Extension Selected"
     if file_types[0] == '':
         print("No File Type Selected")
     else:
@@ -59,27 +60,34 @@ def main():
     image_stem = os.path.splitext(image_name)[0]
 
     keywords = input("Enter Keywords (comma-separated, e.g.: Lorem, Ipsum, dolor): ").split(",")
+    kw_res = "No Keyword Selected"
     if keywords[0] == '':
         print("No Keywords Chosen")
     else:
         keywords = [kw.strip().lower() for kw in keywords]
         output_dir = input("Enter Output Directory (e.g.: ./output_files/extracted_files): ")
         output_dir = os.path.join(output_dir, image_stem)
-        MasterFunc(disk_image, keywords, output_dir, start_sector)
+        kw_res = MasterFunc(disk_image, keywords, output_dir, start_sector)
     
     # Stage 4.2: Extracting Images, Videos and Audios.
     ans = input("Do You Want to Exract Media (like images, videos, audios etc.)?: (y/n): ")
+    media_file_types = "Not Selected"
     if ans.lower() == 'y':
         output_dir = input("Enter Output Directory (e.g.: ./output_files/extracted_files): ")
         output_dir = os.path.join(output_dir, image_stem)
-        file_types = input("Enter File Types (comma-separated, e.g.: .png, .mp4, .mp3): ").split(", ")
-        if file_types[0] == '':
-            file_types = ['.png', '.jpg', '.jpeg', '.webp', '.mp4', '.mp3']
+        media_file_types = input("Enter File Types (comma-separated, e.g.: .png, .mp4, .mp3): ").split(", ")
+        if media_file_types[0] == '':
+            media_file_types = ['.png', '.jpg', '.jpeg', '.webp', '.mp4', '.mp3']
         mount_and_extract_files(disk_image, output_dir, start_sector, file_types)
 
     # Stage 5: Report Generation
     print("\n📝 Generating PDF report...")
     generate_report(disk_image, categorized_output)
+    '''
+                    file_types, matching_files = matching_files, 
+                    keywords = keywords, kw_res = kw_res,
+                    ans = ans, media_file_types = media_file_types)
+    '''
 
 if __name__ == "__main__":
     main()

@@ -6,13 +6,14 @@ import tempfile
 
 REPORTS_DIR = "output_files/reports"
 os.makedirs(REPORTS_DIR, exist_ok=True)
+title = "Disk Forensic Report"
 
 class PDFReport(FPDF):
     def header(self):
         self.set_font("Helvetica", "B", 16)
         self.set_text_color(40, 40, 40)
         self.set_fill_color(220, 220, 220)
-        self.cell(0, 12, "Disk Forensics Report", ln=True, align="C", fill=True)
+        self.cell(0, 12, title, ln=True, align="C", fill=True)
         self.ln(6)
 
     def footer(self):
@@ -86,12 +87,19 @@ def generate_pie_chart(data_dict):
     return tmp_file.name
 
 def generate_report(disk_image_path, categorized_output):
+    ''' 
+                    file_types, matching_files, 
+                    keywords, kw_res,
+                    ans, media_file_types):
+    '''
+    
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     base_name = os.path.basename(disk_image_path)
     report_name = f"report_{base_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
     report_path = os.path.join(REPORTS_DIR, report_name)
 
     pdf = PDFReport()
+    pdf.set_title(title)
     pdf.add_page()
 
     # Metadata
