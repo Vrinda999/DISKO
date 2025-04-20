@@ -1,9 +1,12 @@
 import os
 import subprocess
+import shutil
 
 def run_dcfldd():
     print("Welcome to the dcfldd runner script!")
     print("Please provide the required details below.")
+    
+    dcfldd_path = shutil.which("dcfldd")
 
     # Ask if the user wants to perform imaging
     imaging_choice = input("Do you want to perform disk imaging? (yes/no): ").strip().lower()
@@ -15,7 +18,7 @@ def run_dcfldd():
             input_file = input("Input file/device cannot be empty. Please enter again: ").strip()
 
         # Define the output folder
-        output_folder = "output_files"
+        output_folder = "./output_files"
         os.makedirs(output_folder, exist_ok=True)  # Create the folder if it doesn't exist
 
         output_filename = input("Enter the output filename (e.g., output.img): ").strip()
@@ -31,7 +34,8 @@ def run_dcfldd():
             hash_algorithm = input("Enter hash algorithm (e.g., md5, sha1, sha256): ").strip()
 
         # Constructing the dcfldd command
-        command = ["dcfldd", f"if={input_file}", f"of={output_file}"]
+        command = ["sudo", dcfldd_path, f"if={input_file}", f"of={output_file}"]
+
 
         if hash_option == 'yes' and hash_algorithm:
             command.append(f"hash={hash_algorithm}")
