@@ -1,11 +1,13 @@
 import os
 import re
 import subprocess
+import docx2txt
+import tempfile
 from utils.run_command import run_command
 
 def mount_and_extract_text_files(image_path, output_dir, start_sector, file_types = None):
     if not file_types:
-        file_types = ['.txt', '.pdf', '.doc', '.docx']
+        file_types = ['.txt', '.pdf', '.docx']
     
     img_file_type = "dd"
 
@@ -146,6 +148,56 @@ def search_keywords_in_pdf_files(pdf_files, keywords):
         return "Keyword(s) Not Present."
 
 
+
+def extract_keywords_from_docx_files(docx_paths, keywords):
+    temp_txt_paths = []
+    docx_to_txt_map = {}
+
+    # TemporaryDirectory to Auto Delete Temp Files.
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        for docx_path in docx_paths:
+            try:
+                text = docx2txt.process(docx_path)
+                base_name = os.path.basename(docx_path)
+                converted_name = f"converted_{os.path.splitext(base_name)[0]}.txt"
+                txt_path = os.path.join(tmp_dir, converted_name)
+
+                with open(txt_path, "w", encoding="utf-8") as f:
+                    f.write(text)
+
+                temp_txt_paths.append(txt_path)
+                docx_to_txt_map[txt_path] = docx_path
+
+            except Exception as e:
+                print(f"❌ Failed to process {docx_path}: {e}")
+
+        # Run keyword search on temporary .txt files
+        raw_results = search_keywords_in_txt_files(temp_txt_paths, keywords)
+
+        # Map results back to original .docx paths
+        final_results = {kw:['nil'] for kw in keywords}    
+        print(f'Final Res: {final_results}, \nRaw: {raw_results}\n\n{"---x---"*15}\n')  
+
+        if raw_results != "Keyword(s) Not Present.":
+            for kw, found_list in raw_results.items():
+                print(f'Kw: {kw}, \n\nFound List: {found_list}\n{"---x---"*15}\n')    
+                res = []
+                if isinstance(found_list, str) or (len(found_list) == 1 and isinstance(found_list[0], str)):  
+                    print(found_list[0])
+                    continue
+                else:
+                    for txt_path, snippet in found_list:
+                        print(f'Txt path: {txt_path}, \nSnippet: {snippet}\n\n')
+                        original_path = docx_to_txt_map.get(txt_path)
+                        if original_path:
+                            res.append((original_path, snippet))
+                final_results[kw] = res
+                print(f'\n\n{"---x---"*15}\nFinal Results FINAL WALE: {final_results}\n\n')
+            
+        return final_results
+
+
+
 def get_file_paths(folder_path, ext):
     txt_files = []
     for root, dirs, files in os.walk(folder_path):
@@ -159,12 +211,8 @@ def MasterFunc(image_path, keywords, output_dir, start_sector, file_types = None
     mount_and_extract_text_files(image_path, output_dir, start_sector, file_types)
     txt_paths = get_file_paths(output_dir, ".txt")
     pdf_paths = get_file_paths(output_dir, ".pdf")
-
-    print(f'\nTXT Paths: {txt_paths}, \nPDF Paths: {pdf_paths}\n\n')
-
-    # doc_paths = get_file_paths(output_dir, ".doc")
-    # res = get_file_paths(output_dir, ".docx")
-    # doc_paths.append(res)
+    docx_paths = get_file_paths(output_dir, ".docx")
+    print(f'\nTXT Paths: {txt_paths}, \nPDF Paths: {pdf_paths}, \nDOCX Paths: {docx_paths}\n\n')
 
     result = {kw:[] for kw in keywords}
     
@@ -184,7 +232,13 @@ def MasterFunc(image_path, keywords, output_dir, start_sector, file_types = None
                 result[kw] += res[kw]
     print(f'Result: {result}')
 
-    # res = search_keywords_in_doc_files(doc_paths, keywords)
+    res = extract_keywords_from_docx_files(docx_paths, keywords)
+    if res != "Keyword(s) Not Present.":
+        for kw in result.keys():
+            print(f'KW: {kw}, \nResult Keys: {result.keys()}, \nres: {res}\n\n')
+            if res[kw][0] != 'nil':
+                result[kw] += res[kw]
+    print(f'Result after docx: {result}')
 
     for kw, found_list in result.items():
         if found_list == []:
