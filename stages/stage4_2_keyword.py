@@ -5,7 +5,7 @@ import docx2txt
 import tempfile
 from utils.run_command import run_command
 
-def mount_and_extract_text_files(image_path, output_dir, start_sector, file_types = None):
+def mount_and_extract_files(image_path, output_dir, start_sector, file_types = None):
     if not file_types:
         file_types = ['.txt', '.pdf', '.docx']
     
@@ -208,7 +208,7 @@ def get_file_paths(folder_path, ext):
 
 
 def MasterFunc(image_path, keywords, output_dir, start_sector, file_types = None):
-    mount_and_extract_text_files(image_path, output_dir, start_sector, file_types)
+    mount_and_extract_files(image_path, output_dir, start_sector, file_types)
     txt_paths = get_file_paths(output_dir, ".txt")
     pdf_paths = get_file_paths(output_dir, ".pdf")
     docx_paths = get_file_paths(output_dir, ".docx")

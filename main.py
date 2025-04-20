@@ -5,6 +5,7 @@ from stages.stage2_extraction import analyze_disk_image
 from stages.stage3_categorization import categorize_data
 from stages.stage4_filtering import get_files_by_type
 from stages.stage4_2_keyword import MasterFunc
+from stages.stage4_2_keyword import mount_and_extract_files
 from stages.stage5_reporting import generate_report
 
 
@@ -37,7 +38,7 @@ def main():
     print("\n📂 Proceeding to Filtering...")
     
     # File type filtering
-    file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(",")
+    file_types = input("Enter file types (comma-separated, e.g., .pdf, .png): ").split(", ")
     if file_types[0] == '':
         print("No File Type Selected")
     else:
@@ -65,6 +66,16 @@ def main():
         output_dir = input("Enter Output Directory (e.g.: ./output_files/extracted_files): ")
         output_dir = os.path.join(output_dir, image_stem)
         MasterFunc(disk_image, keywords, output_dir, start_sector)
+    
+    # Stage 4.2: Extracting Images, Videos and Audios.
+    ans = input("Do You Want to Exract Media (like images, videos, audios etc.)?: (y/n): ")
+    if ans.lower() == 'y':
+        output_dir = input("Enter Output Directory (e.g.: ./output_files/extracted_files): ")
+        output_dir = os.path.join(output_dir, image_stem)
+        file_types = input("Enter File Types (comma-separated, e.g.: .png, .mp4, .mp3): ").split(", ")
+        if file_types[0] == '':
+            file_types = ['.png', '.jpg', '.jpeg', '.webp', '.mp4', '.mp3']
+        mount_and_extract_files(disk_image, output_dir, start_sector, file_types)
 
     # Stage 5: Report Generation
     print("\n📝 Generating PDF report...")
