@@ -56,3 +56,5 @@ typing_extensions==4.13.1
 tzdata==2025.2
 urllib3==2.3.0
 Whoosh==2.7.4
+Pillow==10.2.0
+mutagen==1.47.0
