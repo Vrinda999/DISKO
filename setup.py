@@ -36,7 +36,7 @@ setup(
             "disko = main:main",  # refers to main() in main.py
         ],
     },
-    author="Your Name",
+    author="Simmi Thapad, Vrinda Abrol",
     description="DISKO - Disk Operation Tool for Data Categorization and Keyword Filtering",
     license="MIT",
 )

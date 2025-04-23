@@ -48,6 +48,7 @@ rdflib==6.3.2
 reportlab==4.3.1
 requests==2.32.3
 scipy==1.15.2
+setuptools==79.0.0
 simplejson==3.20.1
 six==1.17.0
 tqdm==4.67.1
@@ -56,5 +57,3 @@ typing_extensions==4.13.1
 tzdata==2025.2
 urllib3==2.3.0
 Whoosh==2.7.4
-Pillow==10.2.0
-mutagen==1.47.0

@@ -40,8 +40,6 @@ def mount_and_extract_files(image_path, output_dir, start_sector, file_types = N
                     relative_path = os.path.relpath(source_path, mount_dir)
                     dest_path = os.path.join(output_dir, relative_path)
                     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-                    # print(f'Copying Files Now. Root: {root}, \nDirs: {dirs}, \nfile: {file}\n\n')
-                    # print(f"src path: {source_path}, \nrel path: {relative_path}, \nDest Path: {dest_path}\n\n")
                     try:
                         cp_cmd = f'sudo cp "{source_path}" "{dest_path}"'
                         run_command(cp_cmd)
@@ -84,16 +82,6 @@ def search_keywords_in_txt_files(txt_files, keywords):
 
 
     if keyword_found:
-        # for kw, found_list in results.items():
-        #     print(f"\n{"--"*60}\nKeyword: {kw} -->")
-
-        #     if isinstance(found_list, str) or (len(found_list) == 1 and isinstance(found_list[0], str)):
-        #         print(f"{found_list[0]}\n")
-        #         continue
-
-        #     else:
-        #         for file, sent in found_list:
-        #             print(f"- {file}: {sent}\n")
         print("Keyword(s) Found!")
         return results
 
@@ -176,23 +164,19 @@ def extract_keywords_from_docx_files(docx_paths, keywords):
 
         # Map results back to original .docx paths
         final_results = {kw:['nil'] for kw in keywords}    
-        print(f'Final Res: {final_results}, \nRaw: {raw_results}\n\n{"---x---"*15}\n')  
 
         if raw_results != "Keyword(s) Not Present.":
             for kw, found_list in raw_results.items():
-                print(f'Kw: {kw}, \n\nFound List: {found_list}\n{"---x---"*15}\n')    
                 res = []
                 if isinstance(found_list, str) or (len(found_list) == 1 and isinstance(found_list[0], str)):  
                     print(found_list[0])
                     continue
                 else:
                     for txt_path, snippet in found_list:
-                        print(f'Txt path: {txt_path}, \nSnippet: {snippet}\n\n')
                         original_path = docx_to_txt_map.get(txt_path)
                         if original_path:
                             res.append((original_path, snippet))
                 final_results[kw] = res
-                print(f'\n\n{"---x---"*15}\nFinal Results FINAL WALE: {final_results}\n\n')
             
         return final_results
 
@@ -212,37 +196,29 @@ def MasterFunc(image_path, keywords, output_dir, start_sector, file_types = None
     txt_paths = get_file_paths(output_dir, ".txt")
     pdf_paths = get_file_paths(output_dir, ".pdf")
     docx_paths = get_file_paths(output_dir, ".docx")
-    print(f'\nTXT Paths: {txt_paths}, \nPDF Paths: {pdf_paths}, \nDOCX Paths: {docx_paths}\n\n')
 
     result = {kw:[] for kw in keywords}
     
     res = search_keywords_in_txt_files(txt_paths, keywords)
-    print(f"\n{"-"*120}\nTxt Res: {res}\n\n")
     if res != "Keyword(s) Not Present.":
         for kw in result.keys():
             if res[kw][0] != 'nil':
                 result[kw] = res[kw]
     
     res = search_keywords_in_pdf_files(pdf_paths, keywords)
-    print(f'\n{"-"*120}\nPDF Res: {res}\n\n')
     if res != "Keyword(s) Not Present.":
         for kw in result.keys():
-            print(f'KW: {kw}, \nResult Keys: {result.keys()}, \nres: {res}\n\n')
             if res[kw][0] != 'nil':
                 result[kw] += res[kw]
-    print(f'Result: {result}')
 
     res = extract_keywords_from_docx_files(docx_paths, keywords)
     if res != "Keyword(s) Not Present.":
         for kw in result.keys():
-            print(f'KW: {kw}, \nResult Keys: {result.keys()}, \nres: {res}\n\n')
             if res[kw][0] != 'nil':
                 result[kw] += res[kw]
-    print(f'Result after docx: {result}')
 
     for kw, found_list in result.items():
         if found_list == []:
             result[kw] = ['Keyword Not Found']
     
-    print(f'\n\nRsults: {result}')
     return result
