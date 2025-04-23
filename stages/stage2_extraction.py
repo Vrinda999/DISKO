@@ -19,7 +19,7 @@ def analyze_disk_image(disk_image_path):
         return None
 
     print(mmls_output)
-
+    orig_mmls = mmls_output
     # Step 2: Extract the start sector of the first non-meta/non-unallocated partition
     for line in mmls_output.splitlines():
         line = line.strip()
@@ -33,7 +33,8 @@ def analyze_disk_image(disk_image_path):
             description = " ".join(parts[5:])
 
             print(f"\n📌 Selected Partition: Slot {slot} | Start Sector: {start_sector} | Type: {description}")
-            return start_sector  # Found the partition to analyze
+            print(f'ORIG MMLS: {orig_mmls}\n\n')
+            return start_sector , orig_mmls                 # Found the partition to analyze
 
     print("❌ No valid partition found in mmls output.")
     return None

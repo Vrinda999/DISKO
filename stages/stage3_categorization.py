@@ -15,17 +15,17 @@ def categorize_data(image_path, start_sector):
 
     results = {}
 
-    # Deleted files
-    print("\n--- Deleted Files ---")
-    deleted_files = run_command(f"fls -o {start_sector} -r -p {image_path} -d")
-    results['deleted'] = deleted_files
-    print(deleted_files if deleted_files else "No deleted files found.")
-
     # Encrypted files
     print("\n--- Encrypted Files ---")
     encrypted_files = run_command(f"binwalk -E -J {image_path}")
     results['encrypted'] = encrypted_files
     print(encrypted_files if encrypted_files else "No encrypted data found.")
+
+    # Deleted files
+    print("\n--- Deleted Files ---")
+    deleted_files = run_command(f"fls -o {start_sector} -r -p {image_path} -d")
+    results['deleted'] = deleted_files
+    print(deleted_files if deleted_files else "No deleted files found.")
 
     # Current files
     print("\n--- Current Files ---")
