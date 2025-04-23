@@ -51,6 +51,8 @@ def mount_and_extract_files(image_path, output_dir, start_sector, file_types = N
         run_command(f'sudo umount "{mount_dir}"')
         if img_file_type == "e01":
             run_command(f'sudo umount "{ewf_mount_point}"')
+        os.removedirs(mount_dir)
+        os.removedirs(partition_dir)
 
 
 
