@@ -1,6 +1,6 @@
-## 🧪 DISKO: Disk Forensics Tool for Data Categorization & Keyword Filtering
+## 🧪 DISKOVERY: Disk Forensics Tool for Data Categorization & Keyword Filtering
 
-**DISKO** is a Python-based digital forensics tool designed to analyze disk images. It performs a multi-stage forensic analysis including imaging, partition parsing, file categorization, keyword-based filtering, and automatic PDF reporting. The tool supports both complete and filtered analysis outputs and provides investigators with a concise overview of disk contents.  It is a command-line interface (CLI) tool that works well on **Ubuntu** and **Debian-based systems**.
+**DISKOVERY** is a Python-based digital forensics tool designed to analyze disk images. It performs a multi-stage forensic analysis including imaging, partition parsing, file categorization, keyword-based filtering, and automatic PDF reporting. The tool supports both complete and filtered analysis outputs and provides investigators with a concise overview of disk contents.  It is a command-line interface (CLI) tool that works well on **Ubuntu** and **Debian-based systems**.
 
 ---
 
@@ -28,7 +28,7 @@
 
 ### 📁 Project Structure
 ```       
-DISKO/
+DISKOVERY/
 ├── stages/
 │   ├── __init__.py
 │   ├── stage1_disk_imaging.py
@@ -55,8 +55,8 @@ DISKO/
 
 #### 1. Clone the Repository
 ```bash
-git clone https://github.com/simmithapad/DISKO.git
-cd DISKO
+git clone https://github.com/simmithapad/DISKOVERY.git
+cd DISKOVERY
 ```
 
 #### 2. Run Setup (Installs Tools + Python Packages)
