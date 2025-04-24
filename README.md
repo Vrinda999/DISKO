@@ -1,51 +1,51 @@
-# Disko
-## Steps to use
-1. Insert pendrive.
-2. To check the location at which it's inserted: sudo fdisk -l
-3. Go to script folder and run main.py: sudo python3 main.py
-4. Currently this setting is working:
-    ![image](https://github.com/user-attachments/assets/dda4dbe6-0d3c-4c0d-a2ed-788b66e45d1a)
+## 🧪 DISKO: Disk Forensics Tool for Data Categorization & Keyword Filtering
 
-The image will be generated in the specified folder (e.g.: `./output_files`).
-
-## 🧪 Disk Forensics Tool - CLI Based
-
-A _unified_ command-line tool for performing Disk Forensics, including disk Imaging, Partition Extraction, data categorization, Keyword Filtering and PDF Report generation.
+**DISKO** is a Python-based digital forensics tool designed to analyze disk images. It performs a multi-stage forensic analysis including imaging, partition parsing, file categorization, keyword-based filtering, and automatic PDF reporting. The tool supports both complete and filtered analysis outputs and provides investigators with a concise overview of disk contents.  It is a command-line interface (CLI) tool that works well on **Ubuntu** and **Debian-based systems**.
 
 ---
 
 ### ⚙️ Features
-- Perform disk imaging using `dcfldd`
-- Analyze partitions using `mmls` and `fsstat`
-- Categorize files (deleted, encrypted, current, hidden)
-- Filter files from extensions
-- Find Keywords from `.txt`, `.pdf`, and `.docx` files
-- Generate forensic reports in PDF format
+- **Disk Image Support** (`.img`, `.E01`, `.dd`)
+- **Partition Parsing** using `mmls`
+- **File Categorization**:
+  - Deleted
+  - Encrypted
+  - Current
+  - Hidden
+- **File Type Filtering** (e.g., `.pdf`, `.docx`)
+- **Keyword Search** in extracted text-based files
+- **Visual Summary** via pie charts
+- **PDF Report Generation** with listings, and visualizations
+
+---
+
+### Steps to use
+1. Insert pendrive.
+2. To check the location at which it's inserted: sudo fdisk -l
+3. Go to script folder and run main.py: sudo python3 main.py
 
 ---
 
 ### 📁 Project Structure
-```
-disk-forensics-tool/
-├── main.py                         # Entry point
-├── requirements.txt                # Python dependencies
-├── README.md                       # Helper Document
-├── setup.sh                        # Installation script
-├── output_files/                   # Disk images, reports
-│   ├── extracted_files/            # Files Extracted from the Image
-│   ├── mnt/                        # Images are Mounted here for extraction
-│   ├── reports/                    # Generated PDF reports
-├── stages/                         # Modular scripts
+```       
+DISKO/
+├── stages/
+│   ├── __init__.py
 │   ├── stage1_disk_imaging.py
 │   ├── stage2_extraction.py
 │   ├── stage3_categorization.py
 │   ├── stage4_filtering.py
-│   ├── stage4.2_keyword.py
+│   ├── stage4_2_keyword.py
 │   └── stage5_reporting.py
-│   └── template.html
-├── utils/                      # Helper functions
-│   └── run_command.py          # Run shell commands
-└── .venv/                      # Virtual environment
+├── utils/
+│   ├── __init__.py
+│   └── run_command.py
+├── main.py
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── setup.py
+└── pyproject.toml
 ```
 
 ---
@@ -91,8 +91,7 @@ python main.py
 ### 📄 Output
 - Disk images saved in `./output_files/`
 - PDF reports saved in `./output_files/reports/`
-- Extracted files saved in `./output_files/<disk_image_name>/`
-  - e.g.: for `image.dd`, output directory will be `./output_files/image/`
+- Extracted files saved in `./output_files/extracted_files/`
 
 ---
 
@@ -108,7 +107,11 @@ Vrinda Abrol
 
 ---
 
+### License
+ This project is licensed under the MIT License - see the LICENSE file for details.
+
+ ---
+
 ### 🔒 Disclaimer
 > [!Important]
 > This tool is intended for **educational and lawful forensic analysis** only. Use responsibly.
-

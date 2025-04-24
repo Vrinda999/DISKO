@@ -11,8 +11,6 @@ cycler==0.12.1
 defusedxml==0.7.1
 docx==0.2.4
 docx2txt==0.9
-elastic-transport==8.17.1
-elasticsearch==8.17.2
 etelemetry==0.3.1
 filelock==3.18.0
 fls==0.0.1.241224
@@ -56,4 +54,3 @@ traits==7.0.2
 typing_extensions==4.13.1
 tzdata==2025.2
 urllib3==2.3.0
-Whoosh==2.7.4
