@@ -41,10 +41,11 @@ class PDFReport(FPDF):
         self.cell(40, 8, "File Count", 1, 1, "C", True)
 
         self.set_font("Helvetica", "", 10)
+        self.set_fill_color(240, 240, 240)
         for category, files in data_dict.items():
             count = len(files.splitlines())
-            self.cell(60, 8, category, 1)
-            self.cell(40, 8, str(count), 1, 1)
+            self.cell(60, 8, category, 1, 0, "C")
+            self.cell(40, 8, str(count), 1, 1, "C")
 
         self.ln(10)
 
@@ -227,6 +228,7 @@ def generate_report(disk_image_path, mmls_output, categorized_output, output_dir
     # Partition Data
     pdf.set_title("Partition Table")
     pdf.set_content
+    pdf.ln(2)
     
     pdf.set_fill_color(200, 220, 255)
     pdf.set_text_color(0)
@@ -401,18 +403,17 @@ def generate_report(disk_image_path, mmls_output, categorized_output, output_dir
                 pdf.cell(0, 5, "", ln=True)
 
 
-
-
-
-
     # Detailed Categorisation Report.
     if filtered_only == False:
         # Add sections with optional metadata
+        pdf.add_page()
         pdf.set_title("Categorised Files")
         pdf.set_content()
         pdf.ln(2)
         
-        for category, content in remove_unicode(categorized_output.items()):
+        for category, content in categorized_output.items():
+            category = remove_unicode(category)
+            content = remove_unicode(content)
             pdf.add_section(f"{category} Files", content)
 
             if include_metadata:
