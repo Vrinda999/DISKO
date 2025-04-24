@@ -55,21 +55,20 @@ DISKO/
 
 #### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/disk-forensics-tool.git
-cd disk-forensics-tool
+git clone https://github.com/simmithapad/DISKO.git
+cd DISKO
 ```
 
 #### 2. Run Setup (Installs Tools + Python Packages)
 ```bash
-chmod +x setup.sh
-./setup.sh
-pip install -r -requirements.txt
+pip install -r requirements.txt
 ```
 
 #### 3. Start the Tool
 ```bash
+python3 -m venv .venv
 source .venv/bin/activate
-python main.py
+python3 main.py
 ```
 
 ---
