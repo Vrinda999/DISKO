@@ -2,18 +2,18 @@ from setuptools import setup, find_packages
 import pathlib
 
 setup(
-    name="disko",
+    name="diskovery",
     version="0.1.0",
     author="Simmi Thapad, Vrinda Abrol",
-    description="DISKO: Disk Forensics Tool for Data Categorization & Keyword Filtering",
+    description="DISKOVERY: Disk Forensics Tool for Data Categorization & Keyword Filtering",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/simmithapad/DISKO",
+    url="https://github.com/simmithapad/DISKOVERY",
     packages=find_packages(include=["stages", "utils"]),
     install_requires=pathlib.Path("requirements.txt").read_text().splitlines(),
     entry_points={
         "console_scripts": [
-            "disko = main:main"
+            "diskovery = main:main"
         ],
     },
     classifiers=[
