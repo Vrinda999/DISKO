@@ -3,7 +3,7 @@ import pathlib
 
 setup(
     name="diskovery",
-    version="0.1.0",
+    version="0.1.1",
     author="Simmi Thapad, Vrinda Abrol",
     description="DISKOVERY: Disk Forensics Tool for Data Categorization & Keyword Filtering",
     long_description=open("README.md").read(),
@@ -13,7 +13,7 @@ setup(
     install_requires=pathlib.Path("requirements.txt").read_text().splitlines(),
     entry_points={
         "console_scripts": [
-            "diskovery = main:main"
+            "diskovery = diskovery.main:main"
         ],
     },
     classifiers=[

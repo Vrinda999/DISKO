@@ -11,7 +11,7 @@ from stages.stage5_reporting import generate_report
 
 
 def main():
-    print("🔍 DISKO: Disk Operation Tool for Data Categorization and Keyword Filtering - CLI Version")
+    print("🔍 DISKOVERY: Disk Operation Tool for Data Categorization and Keyword Filtering - CLI Version")
 
     # Stage 1: Disk Imaging or Use Existing Image
     disk_image = run_dcfldd()
