@@ -170,21 +170,41 @@ def get_metadata(file_path):
 def remove_unicode(text):
     return text.encode("latin-1", "ignore").decode("latin-1")
 
+# def wrap_text(text, max_chars):
+#     words = text.split(' ')
+#     lines = []
+#     current_line = ""
+
+#     for word in words:
+#         if len(current_line + ' ' + word) <= max_chars:
+#             current_line += ' ' + word if current_line else word
+#         else:
+#             lines.append(current_line)
+#             current_line = word
+#     if current_line:
+#         lines.append(current_line)
+
+#     return '\n'.join(lines)
+
 def wrap_text(text, max_chars):
-    words = text.split(' ')
-    lines = []
-    current_line = ""
+    if '/' in text:
+        parts = text.split('/')
+        lines = []
+        current_line = ''
+        for part in parts:
+            segment = part + '/'
+            if len(current_line) + len(segment) <= max_chars:
+                current_line += segment
+            else:
+                lines.append(current_line.rstrip('/'))
+                current_line = segment
+        if current_line:
+            lines.append(current_line.rstrip('/'))
+        return '\n'.join(lines)
+    else:
+        # Fallback for non-path content
+        return '\n'.join([text[i:i + max_chars] for i in range(0, len(text), max_chars)])
 
-    for word in words:
-        if len(current_line + ' ' + word) <= max_chars:
-            current_line += ' ' + word if current_line else word
-        else:
-            lines.append(current_line)
-            current_line = word
-    if current_line:
-        lines.append(current_line)
-
-    return '\n'.join(lines)
 
 
 
@@ -334,7 +354,6 @@ def generate_report(disk_image_path, mmls_output, categorized_output, output_dir
                     # Header row
                     pdf.cell(title_width, line_height, "title", border=1, align='C', fill=True, ln=0)
                     pdf.cell(desc_width, line_height, "description", border=1, align='C', fill=True, ln=1)
-                    pdf.ln(line_height)
                     pdf.set_content()
                     pdf.set_fill_color(240, 240, 240)
 
@@ -344,7 +363,7 @@ def generate_report(disk_image_path, mmls_output, categorized_output, output_dir
 
                         # Wrap the text manually
                         wrapped_title = wrap_text(title, 40)  # rough character width for title
-                        wrapped_desc = wrap_text(description, 80)  # rough char width for desc
+                        wrapped_desc = wrap_text(description, 78)  # rough char width for desc
 
                         title_lines = wrapped_title.split('\n')
                         desc_lines = wrapped_desc.split('\n')
@@ -352,7 +371,7 @@ def generate_report(disk_image_path, mmls_output, categorized_output, output_dir
                         max_lines = max(len(title_lines), len(desc_lines))
                         row_height = max_lines * line_height
 
-                        if pdf.get_y() + row_height > pdf.h - pdf.b_margin:
+                        if pdf.get_y() + row_height > pdf.h - pdf.b_margin:             # Check if Page is Ending and Add One.
                             pdf.add_page()
 
 
@@ -379,7 +398,7 @@ def generate_report(disk_image_path, mmls_output, categorized_output, output_dir
                         pdf.cell(title_width, 0, '', border='T')
                         pdf.cell(desc_width, 0, '', border='T', ln=1)
                         
-                        pdf.set_xy(x, pdf.get_y() + row_height)
+                pdf.cell(0, 5, "", ln=True)
 
 
 

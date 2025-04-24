@@ -33,7 +33,6 @@ def analyze_disk_image(disk_image_path):
             description = " ".join(parts[5:])
 
             print(f"\n📌 Selected Partition: Slot {slot} | Start Sector: {start_sector} | Type: {description}")
-            print(f'ORIG MMLS: {orig_mmls}\n\n')
             return start_sector , orig_mmls                 # Found the partition to analyze
 
     print("❌ No valid partition found in mmls output.")
