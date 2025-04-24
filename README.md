@@ -45,6 +45,7 @@ DISKO/
 ├── README.md
 ├── requirements.txt
 ├── setup.py
+├── MANIFEST.in
 └── pyproject.toml
 ```
 
@@ -96,8 +97,8 @@ python main.py
 ---
 
 ### 📬 Future Work
-- [ ] Elasticsearch indexing
-- [ ] GUI version with Tkinter or web interface
+- [ ] GPU Acceleration
+- [ ] Memory Forensics Integration
 
 ---
 
