@@ -77,20 +77,23 @@ def main():
         output_dir = "./output_files/extracted_files"
         output_dir = os.path.join(output_dir, image_stem)
         media_file_types = input("Enter File Types (comma-separated, e.g.: .png, .mp4, .mp3): ").split(", ")
-        if media_file_types[0] == '':
+        if media_file_types == ['']:
             media_file_types = ['.png', '.jpg', '.jpeg', '.webp', '.mp4', '.mp3']
-        mount_and_extract_files(disk_image, output_dir, start_sector, file_types)
+        mount_and_extract_files(disk_image, output_dir, start_sector, media_file_types)
 
     # Stage 5: Report Generation
     print("\n📝 Generating PDF report...")
-    filtered_only = input("Do You want the Filtered Output Only? (y/n): ")
-    if filtered_only.lower() == 'y':
-        filtered_only = True
-    else:
+    filtered_only = input("Do You want the Filtered Output Only? (type n for no): ")
+    if filtered_only.lower() == 'n':
         filtered_only = False
+    else:
+        filtered_only = True
     
     print(f'filtered only: {filtered_only}')
-    generate_report(disk_image, mmls_output, categorized_output, filtered_output=matching_files, keyword_hits=kw_res, filtered_only=filtered_only, include_metadata=True)
+    generate_report(disk_image, mmls_output, categorized_output, output_dir,
+                    filtered_output=matching_files, keyword_hits=kw_res, 
+                    media_file_types = media_file_types,
+                    filtered_only=filtered_only, include_metadata=True)
 
 if __name__ == "__main__":
     main()
