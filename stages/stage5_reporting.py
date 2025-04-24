@@ -401,6 +401,7 @@ def generate_report(disk_image_path, mmls_output, categorized_output, output_dir
                         pdf.cell(desc_width, 0, '', border='T', ln=1)
                         
                 pdf.cell(0, 5, "", ln=True)
+            pdf.add_page()
 
 
     # Detailed Categorisation Report.
