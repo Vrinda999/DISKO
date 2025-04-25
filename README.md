@@ -19,13 +19,6 @@
 
 ---
 
-### Steps to use
-1. Insert pendrive.
-2. To check the location at which it's inserted: sudo fdisk -l
-3. Go to script folder and run main.py: sudo python3 main.py
-
----
-
 ### 📁 Project Structure
 ```
 diskovery/
@@ -113,7 +106,6 @@ sudo python3 diskovery/main.py
 
 #### Python Packages
 - `fpdf`
-- `elasticsearch`
 - `docx2txt`
 - `re`
 
@@ -134,8 +126,8 @@ sudo python3 diskovery/main.py
 
 ### 👤 Author
 Simmi Thapad   
-Vrinda Abrol
-Vrinda Diwakar
+Vrinda Abrol  
+Vrinda Diwakar  
 Ankita Ghosh
 
 ---
