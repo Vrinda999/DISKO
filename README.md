@@ -57,22 +57,49 @@ diskovery/
 
 ### 🚀 Quick Start
 
+#### ✅ Option 1: Install from PyPI (Recommended)
+```bash
+pip install diskovery
+```
+
+Then run the tool globally from anywhere:
+```bash
+diskovery
+```
+
+#### ✅ Option 2: Clone the Repository (for development)
+
 #### 1. Clone the Repository
 ```bash
 git clone https://github.com/simmithapad/DISKOVERY.git
 cd DISKOVERY
 ```
 
-#### 2. Run Setup (Installs Tools + Python Packages)
-```bash
-pip install -r requirements.txt
-```
-
-#### 3. Start the Tool
+#### 2. Set Up Environment  (Installs Tools + Python Packages)
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python3 main.py
+pip install -r requirements.txt
+```
+
+#### 3. Run the Tool
+```bash
+python3 diskovery/main.py
+```
+### Example Usage 
+1. Insert your USB device.
+2. Check where it's mounted:
+```bash
+sudo fdisk -l
+```
+3. Run DISKOVERY (choose one):
+- If installed via pip:
+```bash
+sudo diskovery
+```
+- If running from source:
+```bash
+sudo python3 diskovery/main.py
 ```
 
 ---
@@ -108,6 +135,8 @@ python3 main.py
 ### 👤 Author
 Simmi Thapad   
 Vrinda Abrol
+Vrinda Diwakar
+Ankita Ghosh
 
 ---
 
