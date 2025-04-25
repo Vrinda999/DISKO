@@ -1,13 +1,13 @@
 import os
 
-from utils.run_command import run_command
-from stages.stage1_disk_imaging import run_dcfldd
-from stages.stage2_extraction import analyze_disk_image
-from stages.stage3_categorization import categorize_data
-from stages.stage4_filtering import get_files_by_type
-from stages.stage4_2_keyword import MasterFunc
-from stages.stage4_2_keyword import mount_and_extract_files
-from stages.stage5_reporting import generate_report
+from diskovery.utils.run_command import run_command
+from diskovery.stages.stage1_disk_imaging import run_dcfldd
+from diskovery.stages.stage2_extraction import analyze_disk_image
+from diskovery.stages.stage3_categorization import categorize_data
+from diskovery.stages.stage4_filtering import get_files_by_type
+from diskovery.stages.stage4_2_keyword import MasterFunc
+from diskovery.stages.stage4_2_keyword import mount_and_extract_files
+from diskovery.stages.stage5_reporting import generate_report
 
 
 def main():

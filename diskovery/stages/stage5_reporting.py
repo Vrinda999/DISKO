@@ -6,8 +6,8 @@ import tempfile
 import subprocess
 import re
 from PIL import Image
-from stages.stage4_2_keyword import get_file_paths, mount_and_extract_files
-from utils.run_command import run_command
+from diskovery.stages.stage4_2_keyword import get_file_paths, mount_and_extract_files
+from diskovery.utils.run_command import run_command
 
 REPORTS_DIR = "output_files/reports"
 os.makedirs(REPORTS_DIR, exist_ok=True)

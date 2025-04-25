@@ -1,5 +1,5 @@
 import os
-from utils.run_command import run_command
+from diskovery.utils.run_command import run_command
 
 
 def categorize_data(image_path, start_sector):

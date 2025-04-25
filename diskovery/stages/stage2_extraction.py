@@ -1,7 +1,7 @@
 import os
 import re
 from pathlib import Path
-from utils.run_command import run_command
+from diskovery.utils.run_command import run_command
 
 
 OUTPUT_DIR = "output_files"  # Folder where disk images are stored

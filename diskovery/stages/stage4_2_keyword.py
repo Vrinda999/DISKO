@@ -3,7 +3,7 @@ import re
 import subprocess
 import docx2txt
 import tempfile
-from utils.run_command import run_command
+from diskovery.utils.run_command import run_command
 
 def mount_and_extract_files(image_path, output_dir, start_sector, file_types = None):
     if not file_types:

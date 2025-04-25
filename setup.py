@@ -3,13 +3,13 @@ import pathlib
 
 setup(
     name="diskovery",
-    version="0.1.1",
+    version="0.1.2",
     author="Simmi Thapad, Vrinda Abrol",
     description="DISKOVERY: Disk Forensics Tool for Data Categorization & Keyword Filtering",
-    long_description=open("README.md").read(),
+    long_description=(pathlib.Path(__file__).parent / "README.md").read_text(),
     long_description_content_type="text/markdown",
     url="https://github.com/simmithapad/DISKOVERY",
-    packages=find_packages(include=["stages", "utils"]),
+    packages=find_packages(include=["diskovery", "diskovery.*"]),
     install_requires=pathlib.Path("requirements.txt").read_text().splitlines(),
     entry_points={
         "console_scripts": [
