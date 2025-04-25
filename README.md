@@ -27,26 +27,30 @@
 ---
 
 ### 📁 Project Structure
-```       
-DISKOVERY/
-├── stages/
+```
+diskovery/
+├── diskovery/                       # Main package
 │   ├── __init__.py
-│   ├── stage1_disk_imaging.py
-│   ├── stage2_extraction.py
-│   ├── stage3_categorization.py
-│   ├── stage4_filtering.py
-│   ├── stage4_2_keyword.py
-│   └── stage5_reporting.py
-├── utils/
-│   ├── __init__.py
-│   └── run_command.py
-├── main.py
-├── LICENSE
-├── README.md
-├── requirements.txt
-├── setup.py
-├── MANIFEST.in
-└── pyproject.toml
+│   ├── main.py                      # CLI entry point
+│   ├── stages/                      # Stage-wise modular pipeline
+│   │   ├── __init__.py
+│   │   ├── stage1_disk_imaging.py
+│   │   ├── stage2_extraction.py
+│   │   ├── stage3_categorization.py
+│   │   ├── stage4_filtering.py
+│   │   ├── stage4_2_keyword.py
+│   │   └── stage5_reporting.py
+│   └── utils/                       # Utility functions
+│       ├── __init__.py
+│       └── run_command.py
+│
+├── README.md                        # Project overview and usage
+├── LICENSE                          # MIT License
+├── setup.py                         # Packaging configuration
+├── requirements.txt                 # Python dependencies
+├── MANIFEST.in                      # Include non-code files for PyPI
+├── pyproject.toml                   # Build configuration
+└── .gitignore                       # Git ignore rules
 ```
 
 ---
