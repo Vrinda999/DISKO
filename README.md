@@ -73,6 +73,7 @@ cd DISKOVERY
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+sudo apt update && sudo apt install -y dcfldd sleuthkit binwalk grep pdfgrep
 ```
 
 #### 3. Run the Tool
@@ -85,7 +86,7 @@ python3 diskovery/main.py
 ```bash
 sudo fdisk -l
 ```
-<img src="https://github.com/user-attachments/assets/77b0b981-3d36-4c47-9e19-4cef14787032" width="600px" />
+<img src="https://github.com/user-attachments/assets/77b0b981-3d36-4c47-9e19-4cef14787032" width="500px" />
 
 3. Run DISKOVERY (choose one):
 - If installed via pip:
@@ -101,7 +102,7 @@ sudo python3 diskovery/main.py
 ---
 
 ### 🛠️ Dependencies
-#### System Tools (Installed via `setup.sh`)
+#### System Tools
 - `dcfldd`
 - `sleuthkit` (for `mmls`, `fls`, `fsstat`)
 - `binwalk`
