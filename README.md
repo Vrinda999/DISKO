@@ -85,7 +85,7 @@ python3 diskovery/main.py
 ```bash
 sudo fdisk -l
 ```
-![fdisk -l](https://github.com/user-attachments/assets/77b0b981-3d36-4c47-9e19-4cef14787032) {width="200px"}
+<img src="https://github.com/user-attachments/assets/77b0b981-3d36-4c47-9e19-4cef14787032" width="600px" />
 
 3. Run DISKOVERY (choose one):
 - If installed via pip:
@@ -96,7 +96,7 @@ sudo diskovery
 ```bash
 sudo python3 diskovery/main.py
 ```
-![diskovery interface](https://github.com/user-attachments/assets/6533f9cd-5b1c-4da1-87f7-277f1b9e155f)
+<img src="https://github.com/user-attachments/assets/6533f9cd-5b1c-4da1-87f7-277f1b9e155f" width="900px" />
 
 ---
 
